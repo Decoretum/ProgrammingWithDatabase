@@ -49,12 +49,13 @@ public class BackendService {
 
         String chosenTable = scanner.nextLine();
 
-        // results = s.executeQuery("SELECT * FROM `" + chosenTable + "` LIMIT 1");
         String q = "DESC " + chosenTable + ";";
         results = s.executeQuery(q);
 
         //Getting metadata from a query result
 
+
+        // results = s.executeQuery("SELECT * FROM `" + chosenTable + "` LIMIT 1");
         /* ResultSetMetaData metaData = null;
         String[] resultProperties = null;
          while(results.next())
@@ -74,10 +75,12 @@ public class BackendService {
         System.out.println(chosenTable + "\'s Database Table properties");
         while (results.next())
         {
-            System.out.println(chosenTable + " Field: " + results.getString(1));
+            String fieldName = results.getString(1);
+            String fieldType = results.getString(2);
+            String canNull = results.getString(3);
+            System.out.println(chosenTable + " Field: " + fieldName + ", Type: " + fieldType + ", Can be Null: " + canNull);
         }
         
-
         //Closing resultSet
         results.close();
 
