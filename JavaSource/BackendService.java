@@ -10,17 +10,23 @@ public class BackendService {
         try {
             //Establishing Connection
             connection = null;
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class dbClass = Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/softwareengineering",
                 "root", ""
             );
+            System.out.println("Class found for JDBC Driver: " + dbClass.getName());
         } catch (Exception e)
         {
             System.out.println("Exception: " + e);
         }
 
         return connection;
+    }
+
+    public static void queryCreate()
+    {
+        
     }
 
     public static void DatabaseViewing(Connection connection, Scanner scanner)
@@ -39,7 +45,7 @@ public class BackendService {
 
         while (tablesResult.next())
         {
-            String tableName = tablesResult.getString("TABLE_NAME");
+            String tableName = tablesResult.getString(3);   // OR getString("TABLE_NAME");
             tables.add(tableName);
         }
 
@@ -75,10 +81,16 @@ public class BackendService {
         System.out.println(chosenTable + "\'s Database Table properties");
         while (results.next())
         {
-            String fieldName = results.getString(1);
-            String fieldType = results.getString(2);
-            String canNull = results.getString(3);
+            String fieldName = results.getString("Field");
+            String fieldType = results.getString("Type");
+            String canNull = results.getString("Null");
+            String extra = results.getString("Extra").trim();
+
+            if (extra.equals("") || extra.equals(null))
             System.out.println(chosenTable + " Field: " + fieldName + ", Type: " + fieldType + ", Can be Null: " + canNull);
+            
+            else
+            System.out.println(chosenTable + " Field: " + fieldName + ", Type: " + fieldType + ", Can be Null: " + canNull + " Extra: " + extra);
         }
         
         //Closing resultSet
